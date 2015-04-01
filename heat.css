@@ -1,0 +1,273 @@
+
+
+
+
+
+/*
+     FILE ARCHIVED ON 15:57:32 Jun 13, 2013 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 4:46:35 Apr 1, 2015.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+body {
+background-color:#ffb769;
+margin: 0px;
+font-family: Cambria, times, serif;
+}
+
+div.center { text-align: center; 
+        font-variant: small-caps;
+        font-size: 8pt;
+        color: black;
+        height:3ex;
+}
+
+div.gobak {
+text-align: left;
+font-variant: small-caps;
+font-size: smaller;
+margin-left: 0em;
+}
+
+div#main {
+margin-left:auto;
+padding-left:3em;
+padding-top:0px;
+padding-bottom:0px;
+padding-right:1em;
+background-color:ivory;
+border-left:0px dashed black;
+border-right:0px solid black;
+margin-left:3em;
+}
+
+div#stripe {
+cursor:pointer;
+font-variant:small-caps;
+background-color:#202820;
+color: white;
+text-align:center;
+display:block;
+border-left:3em solid olive;
+}
+
+div.p {
+margin-top:0.72ex;
+}
+
+div.stripe {
+font-variant:small-caps;
+background-color:#202820;
+color: white;
+text-align:center;
+display:block;
+}
+
+div.withcaption {
+float:right;clear:right;
+border:1px solid black;
+margin-left:0.5em;
+margin-right:5px;}
+
+div.lithcaption {
+float:left;clear:left;
+border:1px solid black;
+margin-left:0em;
+margin-right:1em;}
+
+div.tv{
+float:right;clear:right;
+border:0px;
+margin-left:0.5em;
+margin-right:5px;
+margin-top:10px;}
+
+div.caption2 {
+margin:0px;
+padding:0px;
+border:0px dotted red;
+padding-top:0.25ex;
+padding-bottom:0.4ex;
+text-align:center;
+font-size:smaller;
+background-color:#e0e0f0;
+color:black;
+display:block;
+}
+
+div.caption {
+margin:0px;
+padding:0px;
+border:0px dotted red;
+padding-top:0.25ex;
+padding-bottom:0.4ex;
+text-align:center;
+font-size:smaller;
+font-family:sans-serif;
+background-color:#e0e0f0;
+color:black;
+display:block;
+}
+
+    div.capwrap {  
+        position:relative; /* important(so we can absolutely position the description div */  
+        margin-top: 1ex; margin-bottom: 1ex;
+    }  
+    div.capdesc{  
+        position:absolute; /* absolute position (so we can position it where we want)*/  
+        bottom:0px; /* position will be on bottom */  
+        left:0px;  
+        width:100%;  
+        /* styling bellow */  
+        background-color:black;  
+        font-size:smaller;  
+        font-family:sans-serif;
+        color:white;  
+        opacity:0.8; /* transparency */  
+        filter:alpha(opacity=80); /* IE transparency */  
+    }  
+    p.capcontent{  
+        padding:10px;  
+        margin:0px;  
+    }  
+
+img.incap {
+border-bottom:1px solid #c0c0c0;
+}
+
+div#last {font-variant: normal;font-style:italic;}
+
+a {
+color: black;
+text-decoration: none;
+border-bottom: 1px dotted black;
+}
+a.bold {
+font-weight:bold;
+}
+h1 a {
+border-bottom: 1px solid black;
+}
+h1 a:hover {
+border-bottom: 2px solid black;
+}
+
+a:hover {
+border-bottom: 1px solid black;
+}
+
+
+a.lightbottom {
+        font-weight: normal;
+        text-decoration: none; outline: 0px;
+	border-bottom: 0px;
+	}
+
+a.nono {
+color:inherit;
+border-bottom:0px;
+text-decoration:none;
+}
+a.nono:hover {
+color:inherit;
+border-bottom:0px;
+text-decoration:none;
+}
+
+a.nodecor {
+  color:inherit;
+  border-bottom:0px;
+}
+a.nodecor:hover {
+  text-decoration:underline;
+}
+
+a.name {
+  font-style:italic;
+  border-bottom:0px;
+}
+a.name:hover {
+  text-decoration:underline;
+}
+
+img {border-width:0px}
+
+img.r {
+border:1px solid black;
+float: right; 
+clear:right;
+margin-left:0.5em;
+margin-right:5px;}
+
+img.l {border-width:0px;float: left}
+img.v {border-width:0px;width:16px;height:17px}
+
+img.n {border-width:0px;width:16px;height:16px;margin-left:-25px;margin-right:6px;}
+
+img {border-width:0px;border-color:#105090;}
+.r {margin-left:20px;border:1px solid white;float: right}
+.l {margin-right:20px;border:1px solid white;float: left}
+.v {border-width:0px;width:16px;height:17px}
+.n {border-width:0px;width:16px;height:16px}
+
+p.newline {clear:both}
+
+img.bigthumb {width:320px;height:240px;border-width:0px}
+img.thumb {width:106px;height:80px;border-width:0px}
+
+h1 {
+font-variant:small-caps;
+letter-spacing:0.05em;
+margin-top:3ex;
+margin-bottom:1ex;
+}
+
+blockquote {
+border-left: 1px dotted #00a8a8;
+margin-left:1em;
+padding-left:1em;
+}
+
+blockquote.c {
+font-family: Consolas, Lucida Console, Courier New, monospaced;
+}
+
+blockquote.aboot {
+font-style: italic;
+border-left: 0px solid #b0f0b0;
+padding-left:0.25em;
+}
+
+p.separator {
+text-align:center;
+}
+
+.bazis-ref {
+font-family:sans-serif;
+letter-spacing:0.1em;
+}
+
+.hangicon16 {
+width:16px;height:16px;margin-left:-20px;margin-right:4px;margin-bottom:-3px;
+}
+
+div#ucaption {
+margin:0px;
+padding:0px;
+padding-top:2px;
+border:0px dotted red;
+text-align:center;
+font-family:sans-serif;
+font-size:smaller;
+background-color:#202820;
+color:white;
+}
+
+span.date {
+font-size:x-small;
+font-family:sans-serif;
+margin-left:0em;
+}
+

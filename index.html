@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+        <head>
+        <meta name="keywords" content="svo fpga verilog плис"/>
+        <meta name="robots" content="index,follow"/>
+        <link rel="stylesheet" href="/~svo/heat.css" type="text/css"/>
+        <link rel="alternate" type="application/rss+xml" title="svo's rss feed" href="http://feeds2.feedburner.com/svofski?format=xml"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="Content-Style-Type" content="text/css"/>
+        <meta name="description" content="VT220 TrueType font"/>
+        <title>
+        Hacking with Style: TrueType VT220 Font
+        </title>
+        </head>
+
+<body class="main">
+<div id="stripe" onclick="window.location.href='/~svo';return false;">Vanity</div>
+<div id="main">
+<br style="clear:both;"/>
+
+<div id=xjr3 style="TEXT-ALIGN:center;background:black;">
+  <img src="images/dfpxhpz9_64cp8g3bff_b.png" style="WIDTH:407px; HEIGHT:46px"
+    alt="Hacking with Style: TrueType VT220 Font">
+</div>
+<br>
+<br>
+<p id="lettrine">I spent some time looking around the net to find a font that mimics DEC VT220 terminal glyph appearance. There is none. There are some old bitmapped fonts from X11 and probably early MacOS distributions that claim to be DEC fonts, they are functional but their visual quality is lacking and nostalgic value is absent. What I wanted was a font that fills my virtual terminal window with the magic hacking glow.</p>
+<br>
+<img src="vt220glyphs.png" style="WIDTH:100px; HEIGHT:170px; FLOAT:left; MARGIN-LEFT:0pt; MARGIN-RIGHT:1em">I was lucky to find this <a href=http://vt100.net/dec/vt220/glyphs id=lmfc title=article>article</a>, that describes how exactly VT220 characters were formed on screen and it turns out that they're not a straight 1:1 bit-to-pixel representation. The author also made a brilliant sample of how the ROM bits are converted into what we see. Unfortunately, the sample given is only a PNG image and it can't be loaded as a font into a terminal emulator. Fortunately, modern displays can display characters that look exactly like this without special circuitry used in the original DEC terminals <i>and</i> there is free software that can be used to create a usable outline font out of a PNG image.<br>
+<br>
+First I found<b> <a href=http://fontforge.sourceforge.net/ id=f.3e title=FontForge>FontForge</a></b>. FontForge is a free application that can be used to design and convert all kinds of fonts: raster, stroked and outline. At first the program is intimidating, but there are nice docs and tutorials on its site. After some reading and poking around I got an impression that it can be used to trace a font from bitmaps. That lead to installing another interesting software piece called <b><a href=http://potrace.sourceforge.net/ id=j.dp title=potrace>potrace</a></b>. This is an autotrace software bundle that does awesome job of converting raster images into vectors but has no user interface at all. Luckily, FontForge is able to interface with potrace transparently so I didn't have to care about that at all. So I did a quick test with one character only, traced it, saved as TTF font, installed it into the system and I got myself my own font with only one glyph. It was looking nice but there should be about 120 of them in a usable font and at least 256 glyphs are given in the sample so it would be a waste not to use them all.<br>
+<br>
+A <a href=http://fontforge.sourceforge.net/autotrace.html id=n3.o title=tutorial>tutorial here</a> describes how to autotrace many characters at once. To make loading many glyph images easier, FontForge understands file names in a common notation like "uXXXX.png", where XXXX is a hexadecimal unicode character code. The original sample image should be sliced into 256 little PNG files. To do this automatically I wrote a little Python script that does the mincing job using <b><a href=http://www.imagemagick.org id=h_30 title=ImageMagick>ImageMagick</a></b>'s <b>convert</b> utility.<br>
+<br>
+<div style=MARGIN-LEFT:40px>
+  <span style="FONT-FAMILY:Courier New">import os</span><br style="FONT-FAMILY:Courier New">
+  <br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">conv='c:\program files\imagemagick\convert.exe'</span><br style="FONT-FAMILY:Courier New">
+  <br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">for ccode in range(256):</span><br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;x = ccode / 16</span><br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;y = ccode % 16</span><br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;ofile = 'u%04x.png' % ccode</span><br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp;&nbsp; os.spawnl(os.P_WAIT, conv, </span><br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;'convert.exe', '-extract', '10x20+%d+%d' % (x*10,y*20), </span><br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;'-modulate', '200,0,0', '-negate',</span><br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;'-filter', 'point', '-resize', '400%', </span><br style="FONT-FAMILY:Courier New">
+  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;'g.png', ofile)</span><br>
+  <br>
+</div>
+What it does is: slice a piece of 10×20 pixels at locations defined by 10*x,20*y, for all 256 grid locations. The cutout pieces are then desaturated and have their contrast maxed out, inverted and resized to 400% without smoothing. What I didn't take into account is that FontForge doesn't like PNG other than 1-bit indexed colour, so I had to do that conversion manually later. This could also be done by adding '-colors 2' option to the argument list in the above script. After running this script and some more fiddling I had a bunch of PNG files that look like this:<br>
+<div id=snk3 style=TEXT-ALIGN:left>
+  <div id=t2_l style=TEXT-ALIGN:left>
+    <img src="images/dfpxhpz9_58fq97tchd_b.png" style="WIDTH:40px; HEIGHT:80px"><img src="images/dfpxhpz9_57d5tp4wgt_b.png" style="WIDTH:40px; HEIGHT:80px">
+  </div>
+</div>
+I also normally need Cyrillic character set. This was a little bit of a complication because older DEC terminals didn't have Cyrillic character set and I couldn't find any authentic reference material. Fortunately, I was able to locate down-line-loadable (that's DEC-speak!) versions of Cyrillic fonts for VT200 family of terminals that are old enough to be considered canon. They were in native ESC-sequence format and they had to be converted into PNG images somehow. I wrote <a href=http://sensi.org/%7Esvo/glasstty/vtparse.py.txt id=zu8i title="another Python script">another Python script</a> that loads font definition and saves found characters as images. Writing PNG images is easy thanks to <a href=http://packages.python.org/pypng/ex.html id=hsb5 title=PyPNG>PyPNG</a> library. Now I had these too:<br>
+<div id=hh9e style=TEXT-ALIGN:left>
+  <img src="images/dfpxhpz9_61fb6734d8_b.png" style="WIDTH:40px; HEIGHT:80px"><img src="images/dfpxhpz9_62f6nncmf4_b.png" style="WIDTH:40px; HEIGHT:80px">
+</div>
+The part that I didn't really get is how FontForge is handling Unicode pages other than default page. I had to manually enter U+0400... codes for every Cyrillic character glyph. This is silly and annoying. I'm not sure how it's supposed to be done. After following the autotrace tutorial I had all glyphs in vector form. Then I had to rearrange Cyrillic characters that were coming in wrong order initially, but it was a relatively easy task.<br>
+<br>
+There are some font settings that I still don't understand, too. The relationships between screen DPI, pixel size, point size etc are beyond me. The resulting font is a little funny that way: on Mac and Linux you need to specify size 20 (or a multiply of that) to have crisp image without antialiasing and antialiasing allows some different sizes look decent too. This is only natural because the characters are traced from bitmaps that are 20 pixels high. On Windows however this is much less obvious as the font size needs to be specified as 15 (or multiplies of 15). This will result in pixel-to-pixel representation of the original glyphs.<br>
+<br>
+Other than that, making a simple TTF font is a matter of careful slicing, loading, tracing, defining metadata and saving in the right format.<br>
+<br>
+<b>Download:</b> <a href=http://sensi.org/%7Esvo/glasstty/Glass_TTY_VT220.ttf id=y4i1 title="Glass TTY VT220">Glass TTY VT220</a> (TrueType) — Use size <b>20</b> on Mac/Linux, size <b>15</b> in Windows.&nbsp; You will probably have
+to enter these numbers manually because they are not in the standard
+size grid.<br>
+<br>
+<br>
+<h3>Reference Info</h3>
+<a href="http://vt100.net">Everything about DEC terminals</a><br>
+<a href="http://npj.netangels.ru/shattered/inventory/fonts">Soft
+downloadable Cyrillic fonts for VT family of terminals</a><br>
+<br style="clear:both"/>
+<br style="clear:both"/>
+
+<div class="center">—-—</div>
+<div class="center">Address of this page: <a href="http://sensi.org/~svo/glasstty/">http://sensi.org/~svo/glasstty/</a></div>
+<div class="center">You are likely to be eaten by a grue</div>
+<div class="center">
+<a class="lightbottom" href="http://sensi.org/~svo">Copyright&nbsp;&copy;&nbsp;2009&nbsp;Viacheslav Slavinsky</a>&nbsp; svofski on gmail
+</div>
+<div id="last" class="center">
+Updated:
+Wed Oct 28 23:57:04 MSK 2009
+</div>
+
+<br style="clear:both"/>
+<br style="clear:both"/>
+<br style="clear:both"/>
+<br style="clear:both"/>
+<br style="clear:both"/>
+<br style="clear:both"/>
+<br style="clear:both"/>
+
+
+</div> <!--main-->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3398743-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</body>
+</html>
+
