@@ -33,22 +33,21 @@ First I found<b> <a href=http://fontforge.sourceforge.net/ id=f.3e title=FontFor
 <br>
 A <a href=http://fontforge.sourceforge.net/autotrace.html id=n3.o title=tutorial>tutorial here</a> describes how to autotrace many characters at once. To make loading many glyph images easier, FontForge understands file names in a common notation like "uXXXX.png", where XXXX is a hexadecimal unicode character code. The original sample image should be sliced into 256 little PNG files. To do this automatically I wrote a little Python script that does the mincing job using <b><a href=http://www.imagemagick.org id=h_30 title=ImageMagick>ImageMagick</a></b>'s <b>convert</b> utility.<br>
 <br>
-<div style=MARGIN-LEFT:40px>
-  <span style="FONT-FAMILY:Courier New">import os</span><br style="FONT-FAMILY:Courier New">
-  <br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">conv='c:\program files\imagemagick\convert.exe'</span><br style="FONT-FAMILY:Courier New">
-  <br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">for ccode in range(256):</span><br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;x = ccode / 16</span><br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;y = ccode % 16</span><br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;ofile = 'u%04x.png' % ccode</span><br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp;&nbsp; os.spawnl(os.P_WAIT, conv, </span><br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;'convert.exe', '-extract', '10x20+%d+%d' % (x*10,y*20), </span><br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;'-modulate', '200,0,0', '-negate',</span><br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;'-filter', 'point', '-resize', '400%', </span><br style="FONT-FAMILY:Courier New">
-  <span style="FONT-FAMILY:Courier New">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;'g.png', ofile)</span><br>
-  <br>
-</div>
+<pre style="FONT-FAMILY:Courier New">import os
+
+conv='c:\program files\imagemagick\convert.exe'
+
+for ccode in range(256):
+    x = ccode / 16
+    y = ccode % 16
+    ofile = 'u%04x.png' % ccode
+    os.spawnl(os.P_WAIT, conv, 
+        'convert.exe', '-extract', '10x20+%d+%d' % (x*10,y*20), 
+        '-modulate', '200,0,0', '-negate',
+        '-filter', 'point', '-resize', '400%', 
+        'g.png', ofile)
+
+</pre>
 What it does is: slice a piece of 10×20 pixels at locations defined by 10*x,20*y, for all 256 grid locations. The cutout pieces are then desaturated and have their contrast maxed out, inverted and resized to 400% without smoothing. What I didn't take into account is that FontForge doesn't like PNG other than 1-bit indexed colour, so I had to do that conversion manually later. This could also be done by adding '-colors 2' option to the argument list in the above script. After running this script and some more fiddling I had a bunch of PNG files that look like this:<br>
 <div id=snk3 style=TEXT-ALIGN:left>
   <div id=t2_l style=TEXT-ALIGN:left>
